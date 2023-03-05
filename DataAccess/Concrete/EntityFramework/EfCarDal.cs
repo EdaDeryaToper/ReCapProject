@@ -15,9 +15,14 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (RecapContext context = new RecapContext())
             {
-                var addEntity = context.Entry(entity);
-                addEntity.State = EntityState.Added;
-                context.SaveChanges();
+               
+                if (entity.Descriptions.Length>=1 && entity.DailyPrice>0)
+                {
+                    var addEntity = context.Entry(entity);
+                    addEntity.State = EntityState.Added;
+                    context.SaveChanges();
+                }
+                
             }
         }
 
