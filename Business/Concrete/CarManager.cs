@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,34 +20,56 @@ namespace Business.Concrete
         }
 
 
-        public void Add(Car car)
+
+
+        public IDataResults<List<Car>> GetAll()
         {
-            
-            if (car.CarName.Length>=2 && car.DailyPrice>0)
+            if (DateTime.Now.Hour==03)
             {
-                _carDal.Add(car);
+                return new ErrorDataResults<List<Car>>(Messages.MaintenanceTime);
             }
-           
+            return new SuccessDataResults<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
         }
 
-        public List<Car> GetAll()
+        public IDataResults<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResults<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResults<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResults<List<Car>>(_carDal.GetAll(p => p.BrandId == id));
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResults<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll(p => p.BrandId == id);
+            return new SuccessDataResults<List<Car>>(_carDal.GetAll(p => p.ColorId == id));
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IResults Add(Car car)
         {
-            return _carDal.GetAll(p => p.ColorId == id);
+            if (car.CarName.Length <= 2 || car.DailyPrice <= 0)
+            {
+                return new ErrorResults(Messages.CarInvalid);
+            }
+            _carDal.Add(car);
+            return new SuccessResults();
+
         }
+
+        //IDataResults<CarDetailDto> ICarService.GetCarDetails()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void Add(Car car)
+        //{
+
+        //    if (car.CarName.Length>=2 && car.DailyPrice>0)
+        //    {
+        //        _carDal.Add(car);
+        //    }
+
+        //}
     }
 }
