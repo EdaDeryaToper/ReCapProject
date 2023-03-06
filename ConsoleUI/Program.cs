@@ -14,13 +14,13 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new EfCarDal());
             foreach (var item in carManager.GetCarDetails())
             {
-                Console.WriteLine("{0} - {1} - {2} - {3}",item.Descriptions, item.BrandName, item.ColorName,item.DailyPrice);
+                Console.WriteLine("{0} - {1} - {2} - {3}",item.CarName, item.BrandName, item.ColorName,item.DailyPrice);
             }
 
-            Console.WriteLine("\n--CAR: Id---Description");
+            Console.WriteLine("\n--CAR: Id---Name--Description");
             foreach (var car in carManager.GetAll())
             {
-                Console.WriteLine(car.CarId + " " + car.Descriptions);
+                Console.WriteLine(car.CarId + " " + car.CarName + " " + car.Descriptions);
             }
             Console.WriteLine("\n--COLOR: Id---Name");
             ColorManager colorManager = new ColorManager(new EfColorDal());
@@ -47,8 +47,8 @@ namespace ConsoleUI
             car1.ColorId = 2;
             car1.DailyPrice = 20;
             car1.ModelYear = 2025;
-            car1.Descriptions = "Toyota";
-            carManager.Add(car1);
+            car1.Descriptions = "Dizel, 200km";
+            //carManager.Add(car1);
 
 
             Console.WriteLine("\nGet All CarId and Description:");
