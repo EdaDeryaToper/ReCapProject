@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IColorService
+    public interface IRentalService
     {
-        IDataResults<List<Color>> GetAll();
+        IDataResults<List<Rental>> GetAll();
+        IResults Add(Rental rental);
     }
 }

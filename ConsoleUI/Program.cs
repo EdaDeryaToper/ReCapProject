@@ -13,8 +13,28 @@ namespace ConsoleUI
             //CarTest();
             //CarDtoTest();
             //CarColorBrandTest();
-            
+
             //CarAddMethod();
+            //ResultTest();
+
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            var result = rentalManager.Add(new Rental { RentalId = 3, CarId = 1, CustomerId = 1 });
+            if (result.Success)
+            {
+                Console.WriteLine(result.Message);
+
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
+        }
+
+        private static void ResultTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
             var result = carManager.GetAll();
             if (result.Success)
@@ -29,7 +49,6 @@ namespace ConsoleUI
             {
                 Console.WriteLine(result.Message);
             }
-            
         }
 
         private static void CarAddMethod()
@@ -66,14 +85,14 @@ namespace ConsoleUI
 
             ColorManager colorManager = new ColorManager(new EfColorDal());
             Console.WriteLine("\n--COLOR: Id---Name");
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
                 Console.WriteLine(color.ColorId + " " + color.ColorName);
             }
 
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             Console.WriteLine("\n--BRAND: Id---Name");
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine(brand.BrandId + " " + brand.BrandName);
             }
