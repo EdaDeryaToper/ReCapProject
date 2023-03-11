@@ -57,19 +57,5 @@ namespace Business.Concrete
 
         }
 
-        //IDataResults<CarDetailDto> ICarService.GetCarDetails()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Add(Car car)
-        //{
-
-        //    if (car.CarName.Length>=2 && car.DailyPrice>0)
-        //    {
-        //        _carDal.Add(car);
-        //    }
-
-        //}
     }
 }
