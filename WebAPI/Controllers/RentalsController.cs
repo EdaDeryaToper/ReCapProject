@@ -18,17 +18,8 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
-        [HttpPost]
-        public IActionResult Post(Rental rental)
-        {
-            var result = _rentalService.Add(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet]
+
+        [HttpGet] // postman : Get --- domain/api/rentals
         public IActionResult Get()
         {
             var result = _rentalService.GetAll();
@@ -38,5 +29,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpPost] // postman : Post --- domain/api/rentals
+        public IActionResult Post(Rental rental)
+        {
+            var result = _rentalService.Add(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+       
     }
 }
