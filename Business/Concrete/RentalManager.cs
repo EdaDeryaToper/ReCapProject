@@ -30,6 +30,18 @@ namespace Business.Concrete
             return new SuccessResults(Messages.CarReturned);
         }
 
+        public IResults Update(Rental rental)
+        {
+            _rentalDal.Update(rental);
+            return new SuccessResults();
+        }
+
+        public IResults Delete(Rental rental)
+        {
+            _rentalDal.Delete(rental);
+            return new SuccessResults();
+        }
+
         public IDataResults<List<Rental>> GetAll()
         {
             return new SuccessDataResults<List<Rental>>(_rentalDal.GetAll());

@@ -21,5 +21,23 @@ namespace Business.Concrete
         {
             return new SuccessDataResults<List<Customer>>(_customerDal.GetAll());
         }
+
+        public IResults Add(Customer customer)
+        {
+            _customerDal.Add(customer);
+            return new SuccessResults();
+        }
+
+        public IResults Update(Customer customer)
+        {
+            _customerDal.Update(customer);
+            return new SuccessResults();
+        }
+
+        public IResults Delete(Customer customer)
+        {
+            _customerDal.Delete(customer);
+            return new SuccessResults();
+        }
     }
 }

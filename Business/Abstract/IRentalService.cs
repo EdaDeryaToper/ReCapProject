@@ -10,5 +10,7 @@ namespace Business.Abstract
     {
         IDataResults<List<Rental>> GetAll();
         IResults Add(Rental rental);
+        IResults Update(Rental rental);
+        IResults Delete(Rental rental);
     }
 }
