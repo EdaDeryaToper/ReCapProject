@@ -1,0 +1,3 @@
+Utilities -> Helper Folder -> IFileHelper ve FileHelperManager oluþturuldu
+IFormFile AspNetCore.http aracý onu indir. 
+
