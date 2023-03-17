@@ -1,0 +1,73 @@
+Utilities -> Helper Folder -> IFileHelper ve FileHelperManager oluþturuldu
+IFormFile AspNetCore.http aracý onu indir. 
+
+JWT altyapýsýnýn oluþturulmasý:
+Authorization
+- DB Create table->Users, OperationClaims, UserOperationClaims
+- Entities-> User, OperationClaim, UserOperationClaim
+- DataAccess -> IUserDal -> ek bir operasyon eklendi -> List<OperationClaim> GetClaim(User user);->User'ýn sahip olduðu claimler çekilecek
+- DataAccess -> EfUserDal -> buraya User'ýn sahip olduðu rolleri(claim) yazacaðýz. bunun için (OperationClaim ile UserOperationClaim) tablolarý join edilecek(EfCarDal da ayrýntýlar için CarDto oluþturmak gibi). Böylece user'a ait claimleri çekebileceðiz. 
+- join methodu için RecapContext'te DbSet'leri oluþtur. 
+- Business -> IUserService -> User Claimlerine ulaþmak için method oluþturuldu, email için de bir method oluþturuldu
+- Business -> UserManager -> IUserService implement
+- Business -> DependencyResolvers -> AutofacBusinessModule içerisinde yeni eklenenleri builder yap
+- Otantikasyon (Authentication) iþlemleri -> login ve register iþlemleri için -> UserLoginDto UserRegisterDto
+- Core->Entities-> IDto ile Dto classlarý imzala
+- EfUserDal içerisindeki methodta Dto ile olmasý çok daha mantýklý hale gelir. ilerde user ile ilgili bilgilere eriþmek istenebilir
+- Core->Utilities-> Security token iþlemleri evrenseldir. burada token altyapýsý kurulacak
+- Core->Utilities-> Security->Jwt json ve token ile ilgili kýsýmlar. Eklenen nesneler AccessToken, ITokenHelper, TokenOptions, JwtHelper
+- AccessToken-> eriþim tokený anahtarý
+- ITokenHelper -> anaç Token üretmek
+- Code Refactoring--> ITokenHelper içerisinde User Entities katmanýna ait bir class. Entities Core katmanýný referans aldý, bu yüzden Core katmaný Entities'i referans olarak alamaz. User class'ý evrensel de olmasýyla aslýnda Core katmanýna taþýndý
+- Core -> Entities Concrete dosyasý içerisne User, OperationClaim, UserOperationClaim taþýndý, namespaceleri düzenlendi, kullanýldýklarý classlardaki using namespaceler düzenlendi
+- TokenOptions-> Token standartlarý -> Audience, Issuser, SecurityKey, AccessTokenExpiration gibi bilgileri nesne olarak tutacaðýz. 
+- JwtHelper -> TokenOption bilgilerini okuyacaðýz. Yani configurasyon yardýmýyla (appsetting.json)'daki bilgiler okunacak 
+- Core->Utilities-> Security-> Encryption dosyasý oluþturuldu
+- Encryption -> SecurityKeyHelper TokenOptions.cs'den gelen bir güvenlik anahtarýný simetrik güvenlik anahtarý oluþturmasýný saðladýk
+- Encryption -> SigningCredentialsHelper securitykey ile algoritmamýzý belirlediðimiz bir nesnedir
+- JwtHelper -> SetClaims içerisindeki methodlar için Extensions oluþturuldu.Extensions Class geniþletmek için kullanýlýr-> Geniþletilen nesne
+- Extensions ICollection ile anlayabiliriz. ICollection<Claim> interface'nin iþlevselliði geniþletilir. this neyi geniþleteceðimizi gösterir-> this ICollection<Claim>
+- Business -> IAuthService ve AuthManager login , register için
+- Core-> Utilities-> Hashing HashingHelper passwordün hashini ve saltýný oluþturacak yapý. not : out: içi boþ bile olsa doldurup dýþarý referansýný gönderir.
+- Login ve Register API'lerinin yazýlmasý
+- AuthController -> login register iþlemleri için
+- DependencyResolvers içerisinde AuthManager ve IAuthService ; ITokenHelper JwtHelper eklendi.
+- Configurasyon için-> appsettings.json içerisinde saðlanacak TokenOptions nesnesi eklendi 
+- Configurasyon için-> Startup-> ConfigureService method içerisine services eklenir
+- Configure method-> içersinde authorization ve authemtication olmalý-> app.UseAuthentication(); ekledik: Otantikasyon kimlik doðrulama anlamýnda kullanýlmaktadýr. Otorizasyon, izin veya yetki verme anlamýna gelir. Sýrasýna dikkat et
+- Otantikasyonlarla kime ne yetkisi verileceði belirlenir services.AddAuthentication içeriðindeki gibi
+- jwthelper class içersindeki get hatasý için : nuget-> Microsoft.Extensions.Configuration.Binder -Version 5.0.0 indirdik
+- Extension-> ServiceCollectionExtensions ve ClaimsPrincipalExtensions **Extensions statiktir. 
+- AddDependencyResolvers() ile extensions oluþturulacak böylece dilediðimiz kadar modül ekleyebileceðiz-> polymorphism
+- ClaimPrincipalExtesions class chrome'dan gelen tokenlerý okumak için oluþturuluyor
+- IServiceCollection .net yani apinin servis baðýmlýlýklarýný eklediðimiz ya da araya girmesini istediðimiz servislerin koleksiyonun kendisidir.
+- Core-IoC-ICoreModule -> genel baðýmlýlýklarý yüklenecek. Startup.cs de deðil bu classta çözümleme(injection) yapýlacak.
+- Yani IServiceCollection services ile sadece security için çalýþan ServiceTool.Create(services); yerine bütün cache gibi farklý modüllerde eklenebilecek
+- Business->businessAspect->SecuredOperations
+- SecuredOperations attribute olarak carmanager add methodu üzerine ekle [SecuredOperation("car.add,admin")]
+- Login yapýldýðýnda user'ýn bu iþlemleri yapma yetkisinin olmasý için claimlere register yapýlan user'lara yetki verilecek. OperationClaims ve UserOperationClaims db tablolarýnda
+***Postman: token almak için : post body: FirstName, LastName, Email, Password  https://localhost:44340/api/auth/register ayný   body ile login yap token deðiþir.  [SecuredOperation("car.add,admin")] için https://localhost:44340/api/cars/add 
+  Headers: Key 1: Content-Type application/json Key 2: Authorization Bearer login-token adresi
+  Hata alýnmasý durumunda nuget versiyonlarý eklenen pacgage'larý kontrol et. Versiyonlarda sýkýntý yoksa startup kodlarýný incele
+  Örn:  GetService<IHttpContextAccessor>() bununla alakalý sorun olursa aþaðýdaki iþlemleri yap: 
+ solution-> nuget-> businessta olmayan autofac package ý ekle autofac.dependencyInjection ve microsoft dependency injection
+  
+Cache
+- Core-> CrossCuttingCache -> Caching-> ICacheManager kurallar için
+- MemoryCacheManager -> Microsoft Inmemory üzerinden Caching oluþturulacak. Ýlerde redis gibi bir teknoloji de kullanýlabilir redis klasörü de ekledik. 
+- IMemoryCache microsoftun kütüphanesi
+- IMemoryCache injection ederek implement edemiyoruz. Çünkü zinci business dataaccess webapi arasýnda gidiyor. Aspectler bambaþka bir zincirin içerisinde. Dolayýsýyla baðýmlýlýk zincirinin içerisinde deðil. Bu yüzden servicetool yazmýþtýk ve Icoremodule diye enjekte etmiþtik.
+- IMemoryCache: CoreModule-> serviceCollection.AddMemoryCache() þekilde.-> bu microsofttan gelir
+- ICacheManager CoreModule içerisinde  implement edilir. Bunu yapmamýzýn sebebi ilerde redis kullanmak istersek MemoryCacheManager yerine RedisCacheManager yazabiliriz. 
+- Core-> Aspect-> Autofac->Cache-> CacheAspect ve CacheRemoveAspect Cache methodlarý burada
+- CacheRemoveAspect data bozultuðunda kullanýlýr. yani yeni data eklenirse, güncellenirse, data silinirse(add,update,remove methodlarý) bozulur. methodlar manipule edilir.
+- ICarService-> addtransactionaltest
+- Core-> Aspect-> Autofac->Transaction
+
+Performance
+- Core-> Aspect-> Autofac-> Performance
+- stopwatch - coremodule ekle
+*** Eðer performanceAspect'i interceptor-> aspectinterceptorSelector' e koyarsak 
+classAttributes.Add ile eklersek bu performanceAspect bütün method ve ilerde eklenecek bütün methodlarda çalýþýr
+
+

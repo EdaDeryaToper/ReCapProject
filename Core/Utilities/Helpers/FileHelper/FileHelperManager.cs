@@ -22,12 +22,13 @@ namespace Core.Utilities.Helpers.FileHelper
             {
                 File.Delete(filePath);
             }
+            
             return Upload(file, root);
         }
 
         public string Upload(IFormFile file, string root)
         {
-            if (file.Length>0)
+            if (file.Length > 0)
             {
                 if (!Directory.Exists(root))
                 {
@@ -44,8 +45,8 @@ namespace Core.Utilities.Helpers.FileHelper
                     return filePath;
                 }
             }
-            
-        return null;
+
+            return null;
         }
     }
 }

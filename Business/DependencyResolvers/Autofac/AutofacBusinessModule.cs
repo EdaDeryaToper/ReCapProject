@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Core.Utilities.Helpers.FileHelper;
+using Core.Utilities.Security.Jwt;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -32,6 +33,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
             builder.RegisterType<FileHelperManager>().As<IFileHelper>().SingleInstance();
 

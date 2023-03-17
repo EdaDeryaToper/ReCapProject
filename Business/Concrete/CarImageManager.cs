@@ -32,11 +32,12 @@ namespace Business.Concrete
         public IResults Add(IFormFile file, CarImage carImage)
         {
 
-            IResults results = BusinessRules.Run(CheckCarImageLimit(carImage.CarId));
+            IResults results = BusinessRules.Run(CheckCarImageLimit(carImage.CarId), CheckImageDefault(carImage.CarImageId));
             if (results!=null)
             {
                 return results;
             }
+
             carImage.ImagePath = _fileHelper.Upload(file, FilePath.ImagesPath);
             carImage.Dates = DateTime.Now;
             _carImageDal.Add(carImage);
@@ -75,6 +76,16 @@ namespace Business.Concrete
             return new SuccessResults();
         }
 
+        private IResults CheckImageDefault(int carId)
+        {
+            string carImagePath = null;
+            var result = _carImageDal.GetAll(p => p.CarId == carId).Any(p => p.ImagePath == carImagePath);
+            if (result)
+            {
+                return new ErrorResults(Messages.DefaultImage);
+            }
+            return new SuccessResults();
+        }
         
         //public IResults Upload(CarImage carImage,string imagePath)
         //{
