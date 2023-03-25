@@ -44,9 +44,9 @@ namespace Business.Concrete
             return new SuccessResults();
         }
 
-        public IDataResults<List<CarDetailDto>> GetCarDetails()
+        public IDataResults<List<CarDetailDto>> GetCarDetails(int id)
         {
-            return new SuccessDataResults<List<CarDetailDto>>(_carDal.GetCarDetails());
+            return new SuccessDataResults<List<CarDetailDto>>(_carDal.GetCarDetails(id));
         }
 
         [TransactionScopeAspect]
