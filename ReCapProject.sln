@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32929.386
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{D3759329-7EEA-4445-93C9-BF5F23A92967}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{872BE657-B9E8-4B0C-BFBA-38E7421AD47A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{453BC0D1-760B-4A03-97E5-CABBC659F868}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{41787561-4609-44BB-B801-3D620C5A28B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{5E48FC7B-4F0E-4AE6-9C0A-A041A9A49BD0}"
 EndProject
@@ -38,10 +36,6 @@ Global
 		{453BC0D1-760B-4A03-97E5-CABBC659F868}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{453BC0D1-760B-4A03-97E5-CABBC659F868}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{453BC0D1-760B-4A03-97E5-CABBC659F868}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41787561-4609-44BB-B801-3D620C5A28B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41787561-4609-44BB-B801-3D620C5A28B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41787561-4609-44BB-B801-3D620C5A28B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41787561-4609-44BB-B801-3D620C5A28B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E48FC7B-4F0E-4AE6-9C0A-A041A9A49BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E48FC7B-4F0E-4AE6-9C0A-A041A9A49BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E48FC7B-4F0E-4AE6-9C0A-A041A9A49BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
